@@ -1,0 +1,11 @@
+steps:
+  - name: 'docker.io/library/python:3.9-slim'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        pip install --upgrade pip
+        pip install poetry==1.7.1
+        pip install pytest==7.4.3
+        pip install .
+        pytest .
