@@ -1,8 +1,14 @@
+from typing import Callable
+
 import flet as ft
 
 
 class UserEntry(ft.Row):
-    def __init__(self, initials, send_message):
+    def __init__(self, 
+                 initials: str,
+                 send_message: Callable,
+                 text_color: str = ft.colors.WHITE,
+                 bg_color: str = ft.colors.BLACK):
         super().__init__()
 
         self.send_message = send_message
@@ -13,8 +19,8 @@ class UserEntry(ft.Row):
             # Avatar for Self
             ft.CircleAvatar(
                 content=ft.Text(self.initials),
-                color=ft.colors.WHITE,
-                bgcolor=ft.colors.BLACK,
+                color=text_color,
+                bgcolor=bg_color,
             ),
             # A new message entry form
             ft.TextField(
@@ -49,7 +55,11 @@ class UserEntry(ft.Row):
 
 
 class ChatMessage(ft.Row):
-    def __init__(self, initials, message):
+    def __init__(self, 
+                 initials: str,
+                 message: str,
+                 text_color: str = ft.colors.WHITE,
+                 bg_color: str = ft.colors.BLACK):
         super().__init__()
 
         self.initials = initials
@@ -59,8 +69,8 @@ class ChatMessage(ft.Row):
             # Avatar for Self
             ft.CircleAvatar(
                 content=ft.Text(self.initials),
-                color=ft.colors.WHITE,
-                bgcolor=ft.colors.BLACK,
+                color=text_color,
+                bgcolor=bg_color
             ),
             ft.Text(message),
         ]
