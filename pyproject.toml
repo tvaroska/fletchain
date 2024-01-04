@@ -6,7 +6,7 @@ authors = ["Boris Tvaroska <boris@tvaroska.sk>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.12"
+python = ">=3.9,<4.0"
 flet = ">=0.17.0,<0.18.0"
 pydantic = ">=2.5.0,<2.6.0"
 langchain-core = ">=0.1.0, <0.2.0"
