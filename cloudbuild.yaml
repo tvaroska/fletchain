@@ -6,6 +6,29 @@ steps:
       - |
         pip install --upgrade pip
         pip install poetry==1.7.1
-        pip install pytest==7.4.3
+        pip install tox==4.11.4
         pip install .
-        pytest .
+        tox -r -e py39-p1,py39-p2,py39-p3,py39-p4,py39-p5
+    waitFor: "-"  
+  - name: 'docker.io/library/python:3.10-slim'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        pip install --upgrade pip
+        pip install poetry==1.7.1
+        pip install tox==4.11.4
+        pip install .
+        tox -r -e py310-p1,py310-p2,py310-p3,py310-p4,py310-p5
+    waitFor: "-"        
+  - name: 'docker.io/library/python:3.11-slim'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        pip install --upgrade pip
+        pip install poetry==1.7.1
+        pip install tox==4.11.4
+        pip install .
+        tox -r -e py311-p1,py311-p2,py311-p3,py311-p4,py311-p5
+    waitFor: "-"
