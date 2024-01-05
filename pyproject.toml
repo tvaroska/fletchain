@@ -1,9 +1,10 @@
 [tool.poetry]
 name = "fleetchain"
-version = "0.0.1"
+version = "0.1.0"
 description = ""
 authors = ["Boris Tvaroska <boris@tvaroska.sk>"]
 readme = "README.md"
+exclude = ["demo/*"]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0"
