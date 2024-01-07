@@ -46,13 +46,17 @@ class FletChain(ft.UserControl):
     async def send_message_click(self, e):
         inputs = {"input": self.user_entry.value}
         response = self.chain.invoke(inputs)
-        if self.memory:
-            self.memory.save_context(inputs, {"output": response.content})
+        self.save_context(inputs, response.content)
 
         self.messages.controls.append(ChatMessage(self.user_initials, self.user_entry.value))
         await self.user_entry.clear()
         self.messages.controls.append(ChatMessage(self.ai_initials, response.content))
         await self.update_async()
+
+    def save_context(self, inputs, outputs):
+        if self.memory:
+            self.memory.save_context(inputs, {"output": outputs})
+
 
     def build(self):
         return ft.Column(
