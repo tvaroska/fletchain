@@ -1,8 +1,13 @@
+import uuid
+
 import flet as ft
 from langchain_core.runnables import Runnable
+from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.memory import BaseMemory
 
 from fleetchain.user import UserEntry, ChatMessage
+
+SESSION_ID = 'session'
 
 class FletChain(ft.UserControl):
     def __init__(self,
@@ -18,6 +23,13 @@ class FletChain(ft.UserControl):
 
         self.chain = chain
         self.memory = memory
+
+        if isinstance(self.chain, RunnableWithMessageHistory):
+            self.memory_chain = True
+        else:
+            self.memory_chain = False
+
+
         self.user_initials = self.get_initials(user_name)
         self.user_color = user_color
         self.user_bg_color = user_bgcolor
@@ -43,9 +55,20 @@ class FletChain(ft.UserControl):
         else:
             return name[0]
 
+    def get_id(self, page):
+        if page.session.contains_key(SESSION_ID):
+            return page.session.get(SESSION_ID)
+        else:
+            session_id = str(uuid.uuid4())
+            page.session.set(SESSION_ID, session_id)
+            return session_id
+
     async def send_message_click(self, e):
         inputs = {"input": self.user_entry.value}
-        response = self.chain.invoke(inputs)
+        if self.memory_chain:
+            response = self.chain.invoke(inputs, config={"configurable": {"session_id": self.get_id(self.page)}})
+        else:
+            response = self.chain.invoke(inputs)
         self.save_context(inputs, response.content)
 
         self.messages.controls.append(ChatMessage(self.user_initials, self.user_entry.value))
@@ -54,9 +77,8 @@ class FletChain(ft.UserControl):
         await self.update_async()
 
     def save_context(self, inputs, outputs):
-        if self.memory:
+        if not self.memory_chain and self.memory:
             self.memory.save_context(inputs, {"output": outputs})
-
 
     def build(self):
         return ft.Column(

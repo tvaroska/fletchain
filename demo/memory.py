@@ -1,15 +1,14 @@
 # requires: langchain google-cloud-aiplatform
 
-from operator import itemgetter
-
 import flet as ft
 
 from fleetchain import FletChain
 
-from langchain_core.runnables import RunnablePassthrough, RunnableLambda
-from langchain_google_vertexai import ChatVertexAI
+from langchain_community.chat_message_histories import ChatMessageHistory
+from langchain_core.chat_history import BaseChatMessageHistory
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_google_vertexai  import ChatVertexAI
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.memory import ConversationBufferMemory
 
 async def main(page: ft.Page):
 
@@ -21,15 +20,23 @@ async def main(page: ft.Page):
             ("human", "{input}"),
         ]
     )
-    memory = ConversationBufferMemory(return_messages=True)
-    chain = (
-        RunnablePassthrough.assign(
-            history=RunnableLambda(memory.load_memory_variables) | itemgetter("history")
-        )
-        | prompt
-        | model
-    )
+    chain = prompt | model
 
+    store = {}
+
+
+    def get_session_history(session_id: str) -> BaseChatMessageHistory:
+        if session_id not in store:
+            store[session_id] = ChatMessageHistory()
+        return store[session_id]
+
+
+    memory_chain = RunnableWithMessageHistory(
+        chain,
+        get_session_history,
+        input_messages_key="input",
+        history_messages_key="history",
+    )    
 
     appbar_items = [
         ft.PopupMenuItem(text="Login"),
@@ -54,7 +61,6 @@ async def main(page: ft.Page):
     page.appbar = appbar
     page.vertical_alignment = ft.MainAxisAlignment.END
 
-
-    await page.add_async(FletChain(chain, memory))
+    await page.add_async(FletChain(memory_chain))
 
 ft.app(target= main, view = ft.AppView.WEB_BROWSER)
