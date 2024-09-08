@@ -8,9 +8,9 @@ exclude = ["demo/*"]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
-flet = ">=0.17.0,<0.21.0"
-pydantic = ">=2.0.0,<2.7.0"
-langchain-core = ">=0.1.0, <0.2.0"
+flet = ">=0.21.0,<1.00.0"
+pydantic = ">=2.0.0,<3.0.0"
+langchain-core = ">=0.1.0, <0.3.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.3"
