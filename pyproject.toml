@@ -1,25 +1,24 @@
 [tool.poetry]
 name = "fleetchain"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Boris Tvaroska <boris@tvaroska.sk>"]
 readme = "README.md"
 exclude = ["demo/*"]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.13"
+python = ">=3.9,<3.14"
 flet = ">=0.21.0,<1.00.0"
 pydantic = ">=2.0.0,<3.0.0"
-langchain-core = ">=0.1.0, <0.3.0"
+langchain-core = ">=0.1.0, <0.4.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.3"
 black = "^23.12.1"
 tox = "^4.11.4"
-langchain = ">=0.1.0, <0.2.0"
-google-cloud-aiplatform = "^1.42.1"
-langchain-community = "^0.0.24"
-langchain-google-vertexai = "^0.0.7"
+google-cloud-aiplatform = ">=1.42.1"
+langchain-community = ">=0.1.0, <0.4.0"
+langchain-google-vertexai = ">=0.0.7"
 
 [build-system]
 requires = ["poetry-core"]

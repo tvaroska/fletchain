@@ -55,6 +55,6 @@ async def main(page: ft.Page):
     page.vertical_alignment = ft.MainAxisAlignment.END
 
 
-    await page.add_async(FletChain(chain, memory))
+    page.add(FletChain(chain, memory))
 
 ft.app(target= main, view = ft.AppView.WEB_BROWSER)
