@@ -7,12 +7,15 @@ from langchain_core.memory import BaseMemory
 
 from fleetchain.user import UserEntry, ChatMessage
 
-SESSION_ID = 'session'
+import flet as ft
+import uuid
 
-class FletChain(ft.UserControl):
+SESSION_ID = "session_id"
+
+class FletChain(ft.Column):
     def __init__(self,
                  chain: Runnable,
-                 memory:BaseMemory = None,
+                 memory: BaseMemory = None,
                  user_name: str = 'User',
                  user_color: str = ft.colors.WHITE,
                  user_bgcolor: str = ft.colors.BLACK,
@@ -20,31 +23,25 @@ class FletChain(ft.UserControl):
                  ai_color: str = ft.colors.BLACK,
                  ai_bgcolor: str = ft.colors.WHITE):
         super().__init__()
-
         self.chain = chain
         self.memory = memory
-
-        if isinstance(self.chain, RunnableWithMessageHistory):
-            self.memory_chain = True
-        else:
-            self.memory_chain = False
-
-
+        self.memory_chain = isinstance(self.chain, RunnableWithMessageHistory)
         self.user_initials = self.get_initials(user_name)
         self.user_color = user_color
         self.user_bg_color = user_bgcolor
-        
         self.ai_initials = self.get_initials(ai_name)
         self.ai_color = ai_color
         self.ai_bgcolor = ai_bgcolor
-
         self.user_entry = UserEntry(self.user_initials, self.send_message_click)
-
         self.messages = ft.ListView(
             expand=True,
             spacing=10,
             auto_scroll=True,
         )
+        self.controls = [
+            ft.Container(content=self.messages, expand=True),
+            ft.Container(content=self.user_entry),
+        ]
 
     def get_initials(self, name: str) -> str:
         if len(name) <= 2:
@@ -70,7 +67,6 @@ class FletChain(ft.UserControl):
         else:
             response = self.chain.invoke(inputs)
         self.save_context(inputs, response.content)
-
         self.messages.controls.append(ChatMessage(self.user_initials, self.user_entry.value))
         await self.user_entry.clear()
         self.messages.controls.append(ChatMessage(self.ai_initials, response.content))
@@ -79,11 +75,3 @@ class FletChain(ft.UserControl):
     def save_context(self, inputs, outputs):
         if not self.memory_chain and self.memory:
             self.memory.save_context(inputs, {"output": outputs})
-
-    def build(self):
-        return ft.Column(
-            controls=[
-                ft.Container(content=self.messages),
-                ft.Container(content=self.user_entry),
-            ],
-        )
