@@ -57,4 +57,4 @@ async def main(page: ft.Page):
 
     page.add(FletChain(chain, memory))
 
-ft.app(target= main, view = ft.AppView.WEB_BROWSER)
+ft.app(target= main) #, view = ft.AppView.WEB_BROWSER)

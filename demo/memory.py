@@ -12,7 +12,7 @@ from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 async def main(page: ft.Page):
 
-    model = ChatVertexAI()
+    model = ChatVertexAI(model_name='gemini-1.5-pro-001')
     prompt = ChatPromptTemplate.from_messages(
         [
             ("system", "You are a helpful chatbot"),
