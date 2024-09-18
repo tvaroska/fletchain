@@ -32,7 +32,7 @@ class FletChain(ft.Column):
         self.user_entry = UserEntry(self.user_initials, self.send_message_click)
         self.progress_ring = ft.ProgressRing(width=20, height=20, value=1, visible=False)
         self.progress_text = ft.Text('')
-        self.progress_row = ft.Row(controls=[self.progress_ring, self.progress_text])
+        self.progress_row = ft.Row(controls=[self.progress_ring, self.progress_text], expand=True)
         self.messages = ft.ListView(
             expand=True,
             spacing=10,
