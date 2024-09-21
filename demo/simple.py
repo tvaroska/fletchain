@@ -8,8 +8,8 @@ from fleetchain import FletChain
 
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_google_vertexai import ChatVertexAI
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.memory import ConversationBufferMemory
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.memory.buffer import ConversationBufferMemory
 
 async def main(page: ft.Page):
 
