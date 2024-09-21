@@ -13,7 +13,7 @@ from langchain.memory.buffer import ConversationBufferMemory
 
 async def main(page: ft.Page):
 
-    model = ChatVertexAI()
+    model = ChatVertexAI(model_name='gemini-1.5-flash-001')
     prompt = ChatPromptTemplate.from_messages(
         [
             ("system", "You are a helpful chatbot"),
@@ -57,4 +57,4 @@ async def main(page: ft.Page):
 
     page.add(FletChain(chain, memory))
 
-ft.app(target= main) #, view = ft.AppView.WEB_BROWSER)
+ft.app(target= main, view = ft.AppView.WEB_BROWSER)
